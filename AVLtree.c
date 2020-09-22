@@ -1,5 +1,90 @@
 #include "AVLtree.h"
 
+struct QueueAVL *Qinit()
+{
+    struct QueueAVL *Q = malloc(sizeof(struct QueueAVL));
+    Q->head = NULL;
+    Q->tail = NULL;
+    Q->item_count = 0;
+    return Q;
+}
+
+struct QueueAVL push(struct QueueAVL *queue, struct avltree *root)
+{
+    struct Node *list = malloc(sizeof(struct Node));
+    list->root = root;
+    list->next = NULL;
+    if (root == NULL)
+    {
+        return *queue;
+    }
+    if (queue->tail == NULL)
+    {
+        queue->head = list;
+        queue->item_count = 1;
+    }
+    else
+    {
+        queue->tail->next = list;
+        queue->item_count++;
+    }
+    queue->tail = list;
+    return *queue;
+}
+
+struct avltree *pop(struct QueueAVL *queue)
+{
+    int key = -1;
+    if (queue->head == NULL)
+    {
+        return NULL;
+    }
+    if (queue->item_count == 1)
+    {
+        queue->tail = NULL;
+    }
+    struct Node *tmp = queue->head;
+    queue->head = queue->head->next;
+    struct avltree *root = tmp->root;
+    //free(tmp);
+    queue->item_count--;
+    return root;
+}
+
+void avltree_print_dfs(struct avltree *root, int level)
+{
+    struct QueueAVL *Q = Qinit();
+    int i = 0;
+    int count_max = 1;
+    push(Q, root);
+    struct avltree *root2;
+    while (1)
+    {
+        if (i == count_max)
+        {
+            level--;
+            printf("\n");
+            count_max = count_max * 2 + 1;
+            if (level == 0)
+            {
+                return;
+            }
+        }
+        root = pop(Q);
+        if (root != NULL)
+        {
+            printf("%d ", root->key);
+        }
+        push(Q, root->left);
+        push(Q, root->right);
+        if (Q->head == NULL)
+        {
+            return;
+        }
+        i++;
+    }
+}
+
 int imax2(int a, int b)
 {
     if (a > b)
