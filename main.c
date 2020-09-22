@@ -14,7 +14,7 @@ int main(){
     test_tree = avltree_add(test_tree, -2, c);
     test_tree = avltree_add(test_tree, -3, c);
     test_tree = avltree_add(test_tree, -1, c);
-
+    printf("%d", avltree_max(test_tree)->key);
     printf("%d\n",test_tree->left->left->key);
     return 0;
 }

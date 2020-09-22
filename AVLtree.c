@@ -1,12 +1,12 @@
 #include "AVLtree.h"
 
 int imax2(int a, int b)
-    {
-        if (a>b)
-            return a;
-        else
-            return b;
-    }
+{
+    if (a > b)
+        return a;
+    else
+        return b;
+}
 
 void avltree_free(struct avltree *tree)
 {
@@ -19,6 +19,24 @@ void avltree_free(struct avltree *tree)
     free(tree);
 }
 
+struct avltree *avltree_min(struct avltree *root)
+{
+    while (root->left != NULL)
+    {
+        root = root->left;
+    }
+    return root;
+}
+
+struct avltree *avltree_max(struct avltree *root)
+{
+    while (root->right != NULL)
+    {
+        root = root->right;
+    }
+
+    return root;
+}
 struct avltree *avltree_lookup(struct avltree *tree, int key)
 {
     while (tree != NULL)
@@ -143,7 +161,7 @@ struct avltree *avltree_add(struct avltree *tree, int key, char *value)
         }
     }
     tree->height = imax2(avltree_height(tree->left),
-                       avltree_height(tree->right)) +
+                         avltree_height(tree->right)) +
                    1;
     return tree;
 }
